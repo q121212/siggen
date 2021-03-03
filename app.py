@@ -7,7 +7,7 @@ class Api:
         self.url = url
         self.page = None
         self.page_text = None
-        self.signalType = {'int_page_signal_256': '_get_page_signal_256', 'sum_int_signal': '_get_int_signal'}
+        self.signalType = {'int_page_signal_256': '_get_page_signal', 'sum_int_signal': '_get_int_signal'}
         self.exportFormat = {'xlsx': 'xlsx', 'csv': 'csv'}
 
     def _get_page(self):
@@ -17,9 +17,10 @@ class Api:
             if response.ok:
                 self.page = response.content
                 self.page_text = response.text
-        except (requests.exceptions.MissingSchema, requests.exceptions.InvalidURL) as e:
+        except (requests.exceptions.MissingSchema,
+                requests.exceptions.InvalidURL,
+                requests.exceptions.ConnectionError) as e:
             print(e)
-
 
     def _get_int_signal(self):
         if self.page:

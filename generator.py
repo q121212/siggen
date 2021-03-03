@@ -19,9 +19,15 @@ class MyApp(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('template.ui', self)         # ./venv/lib/python3.8/site-packages/qt5_applications/Qt/bin/designer &
+        self.initUI()
         self.btnCalculateSignal.clicked.connect(self._getPageByUrl)
 
+    def initUI(self):
         self.actionAbout.triggered.connect(self._actionAbout)
+
+        self.actionQuit.setShortcut('Ctrl+Q')
+        self.actionQuit.setStatusTip('Exit application')
+        self.actionQuit.triggered.connect(QtWidgets.qApp.quit)
 
     def _actionAbout(self):
         mbox = QtWidgets.QMessageBox(self.menuHelp)
@@ -40,7 +46,7 @@ class MyApp(QtWidgets.QMainWindow):
         url = self.urlLineEdit.text()
         signalType = self.signalTypeComboBox.currentText()
         exportFormat = self.exportFormatComboBox.currentText()
-        print(signalType, exportFormat)
+        # print(signalType, exportFormat)
         # print(url)
         if url:
             api = Api(url)
@@ -48,7 +54,6 @@ class MyApp(QtWidgets.QMainWindow):
             api._get_int_signal()
             if api.page:
                 self.resText = 'Done'
-                getattr(api, api.signalType.get(signalType))()
                 self.currentSignal = getattr(api, signalType)
                 self.currentExportFormat = api.exportFormat.get(exportFormat)
                 # print(self.currentSignal[:10], self.currentExportFormat)
@@ -60,11 +65,9 @@ class MyApp(QtWidgets.QMainWindow):
                     self.toolbar = NavigationToolbar(static_canvas, self)
                     self.addToolBar(self.toolbar)
 
-
                     self._static_ax = static_canvas.figure.subplots()
                     series = pd.Series(self.currentSignal)
-                    self._static_ax.plot(series.index, api.sum_int_signal)
-                    # self._static_ax.plot(t, np.tan(t), ".")
+                    self._static_ax.plot(series.index, self.currentSignal)
 
 
                 # dynamic_canvas = FigureCanvas(Figure(figsize=(5, 3)))
@@ -81,9 +84,8 @@ class MyApp(QtWidgets.QMainWindow):
                 # self._timer.start()
                 else:
                     self._static_ax.clear()
-                    t = np.linspace(0, 10, 101)
                     series = pd.Series(self.currentSignal)
-                    self._static_ax.plot(series.index, api.sum_int_signal)
+                    self._static_ax.plot(series.index, self.currentSignal)
                     self._static_ax.figure.canvas.draw()
             else:
                 self.resText = 'Error. Check an Url'
