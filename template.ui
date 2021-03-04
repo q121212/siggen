@@ -130,6 +130,11 @@
       <string>int_page_signal_256</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>ord_int_signal</string>
+     </property>
+    </item>
    </widget>
    <widget class="QComboBox" name="exportFormatComboBox">
     <property name="geometry">

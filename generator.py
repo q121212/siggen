@@ -1,13 +1,8 @@
 import sys
 import pandas as pd
-import numpy as np
-# from PyQt6.QtWidgets import QApplication, QWidget, QDialog, QPushButton, QLabel, QMessageBox, QLineEdit
-# import requests
-from template import Ui_signalGeneratorMainWindow
 from PyQt5 import uic, QtGui, QtWidgets, QtCore
 import asyncio
 import time
-import matplotlib.pyplot as plt
 from app import Api
 
 from matplotlib.backends.backend_qt5agg import (
@@ -95,26 +90,16 @@ class MyApp(QtWidgets.QMainWindow):
             thread.start()
             thread.finished.connect(lambda txt='', lbl=self.actionResultabel: lbl.setText(""))
 
-    def _update_canvas(self):
-        t = np.linspace(0, 10, 101)
-        # Shift the sinusoid as a function of time.
-        self._line.set_data(t, np.sin(t + time.time()))
-        self._line.figure.canvas.draw()
-
-
-class MatplotlibCanvas(FigureCanvas):
-    def __init__(self, parent=None, dpi=120):
-        fig = Figure(dpi=dpi)
-        self.axes = fig.add_subplot(111)
-        super(MatplotlibCanvas, self).__init__(fig)
-
-        # self.axes = fig.add_subplot(111)
-        # super(MatplotlibCanvas, self).__init__(fig)
-        # fig.tight_layout()
+    # def _update_canvas(self):
+    #     t = np.linspace(0, 10, 101)
+    #     # Shift the sinusoid as a function of time.
+    #     self._line.set_data(t, np.sin(t + time.time()))
+    #     self._line.figure.canvas.draw()
 
 
 class DummyThread(QtCore.QThread):
     finished = QtCore.pyqtSignal()
+
     def run(self):
         time.sleep(1)
         self.finished.emit()
