@@ -1,5 +1,6 @@
 import requests
 import numpy as np
+from functools import lru_cache
 
 
 class Api:
@@ -12,6 +13,7 @@ class Api:
                            'ord_int_signal': '_get_page_signal'}
         self.exportFormat = {'xlsx': 'xlsx', 'csv': 'csv'}
 
+    @lru_cache(100)
     def _get_page(self):
         response = {'ok': None}
         try:
