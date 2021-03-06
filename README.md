@@ -6,3 +6,8 @@ Outline
   - url selection and signal generation settings
   - generate signals with different size
   - export result to different formats
+
+For starting 
+```python
+python generator.py
+```
